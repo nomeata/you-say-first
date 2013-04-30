@@ -1,1 +1,124 @@
 /* CSS declarations go here */
+
+h1, h3 {
+    font-family: sans-serif
+}
+
+#header {
+    position: absolute;
+    left: 0px;
+    right: 0px;
+    top: 0px;
+    height: 50px;
+    margin:0px;
+    padding:0px;
+}
+#header h1 {
+    font-size: 40px;
+    margin:0px;
+    padding:0px;
+    text-align: center;
+}
+
+.content {
+    bottom:0px;
+}
+
+#players_pane h3,
+#moves_pane h3,
+#explanation h3 {
+    background-color: lightblue;
+    margin:0px;
+    margin-bottom: 10px;
+    padding: 4px;
+    text-align:center;
+}
+
+#players_pane .forms {
+    padding: 0px 10px;
+    margin:0px;
+    margin-bottom: 10px;
+
+}
+#players_pane input#myname {
+    width: 50%;
+    margin:right: 5%;
+}
+#players_pane input#leave {
+    width: 20%;
+    margin:right: 5%;
+}
+#players_pane input#join {
+    width: 20%;
+    margin:right: 0%;
+}
+
+#players_pane ul {
+    padding:0px;
+    margin:0px;
+}
+#players_pane ul li {
+    margin: 0px 0px;
+    padding: 4px;
+    display: block;
+}
+#players_pane ul li:nth-child(odd) {
+    background-color: lightgray;
+}
+#players_pane ul li.waiting .symbol {
+  display:inline-block;
+  text-align:center;
+  width:1em;
+  color: red;
+}
+#players_pane ul li.finished .symbol {
+  display:inline-block;
+  text-align:center;
+  width:1em;
+  color: green;
+}
+#players_pane ul li {
+    display: block;
+}
+
+#players_pane {
+    position: absolute;
+    left: 1%;
+    right: 80%;
+    top: 55px;
+    bottom: 1%;
+    overflow: hidden;
+    border: 1px solid lightblue;
+}
+#moves_pane {
+    position: absolute;
+    left: 21%;
+    right: 21%;
+    top: 55px;
+    bottom: 1%;
+    overflow: hidden;
+    border: 1px solid lightblue;
+}
+#moves_pane .forms {
+    padding: 2px;
+    text-align: center;
+
+}
+#moves_pane input#mymove {
+    width:80%;
+}
+
+#explanation {
+    position: absolute;
+    left: 80%;
+    right: 1%;
+    top: 55px;
+    bottom: 1%;
+    border: 1px solid lightblue;
+    overflow: auto;
+}
+#explanation p {
+    padding: 0px 10px;
+    margin: 0px 0px 10px 0px;
+    text-align: justify;
+}

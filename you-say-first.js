@@ -141,9 +141,9 @@ if (Meteor.isClient) {
 
   Meteor.startup(function () {
     Session.set('auth_tok', false);
-    var auth_id = window.localStorage.getItem('you-say-first-id');
+    var auth_id = window.sessionStorage.getItem('you-say-first-id');
     Meteor.call('login', auth_id, function (error, auth_tok) {
-      window.localStorage.setItem('you-say-first-id', auth_tok);
+      window.sessionStorage.setItem('you-say-first-id', auth_tok);
       Session.set('auth_tok', auth_tok);
     })
   });
@@ -214,12 +214,20 @@ if (Meteor.isClient) {
     return Session.get('room_id');
   }
 
+  Template.room.loggedin = function () {
+    return Boolean(Session.get('player_id'));
+  };
+
   Template.room.moves = function () {
     return Moves.find();
   };
 
   Template.room.players = function () {
     return Players.find({idle: false, room: Session.get('room_id')});
+  };
+
+  Template.welcome.roomname = function () {
+    return Random.id()
   };
 
   Template.welcome.events({
@@ -245,6 +253,7 @@ if (Meteor.isClient) {
     'click input#leave': function (evt) {
       me = player();
       Players.remove(me._id);
+      Session.set('player_id', false);
     },
     'keyup input#mymove': function (evt) {
       var move = $('input#mymove').val().trim();

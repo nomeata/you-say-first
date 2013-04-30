@@ -3,11 +3,23 @@
 </head>
 
 <body>
-<h1>You Say First!</h1>
+<div id="header">
+  <h1>You Say First!</h1>
+</div>
   {{> page}}
+
+<div id="explanation">
 <h3>What is this?</h3>
-You-say-first is a web application to play ad-hoc games where all players have to submit their moves at the same time (e.g. tic-tac-toe, diplomacy). Here, you can create a room (just enter any name that you want), share the address with your friends and start playing. You can enter your move, and as soon as everyone ticks the ‘Final’ field, the moves are shown to everyone. This was inspired by a <a href="http://boardgames.stackexchange.com/questions/11821/abstract-move-holding-service-for-simultaneous-move-board-games">question by ‘Fool’</a> on the Boards and Card Games stack overflow page. It was created by <a href="mailto:mail@joachim-breitner.de">Joachim Breitner</a> using Meteor and hosted by <a href="http://meteor.com">meteor.com</a>. You can <a href="https://github.com/nomeata/you-say-first">Check out the code</a>; bug reports and pull requests are welcome.
+<div class="content">
+<p>
+You-say-first is a web application to play ad-hoc games where all players have to submit their moves at the same time (e.g. tic-tac-toe, diplomacy). Here, you can create a room (just enter any name that you want), share the address with your friends and start playing. You can enter your move, and as soon as everyone ticks the ‘Final’ field, the moves are shown to everyone.
 </p>
+
+<p>
+This was inspired by a <a href="http://boardgames.stackexchange.com/questions/11821/abstract-move-holding-service-for-simultaneous-move-board-games">question by ‘Fool’</a> on the Boards and Card Games stack overflow page. It was created by <a href="mailto:mail@joachim-breitner.de">Joachim Breitner</a> using Meteor and hosted by <a href="http://meteor.com">meteor.com</a>. You can <a href="https://github.com/nomeata/you-say-first">Check out the code</a>; bug reports and pull requests are welcome.
+</p>
+</div>
+</div>
 </body>
 
 <template name="page">
@@ -21,34 +33,50 @@ You-say-first is a web application to play ad-hoc games where all players have t
 <template name="welcome">
 <p>
 You can create or enter a room here:
-<input type="text" id="room" /> <input type="submit" id="roomsubmit" value="Enter Room"/>
+<input type="text" id="room" value="{{roomname}}" /> <input type="submit" id="roomsubmit" value="Enter Room"/>
 </p>
 </template>
 
 <template name="room">
- <h3>Moves</h3>
-  <ul>
-  {{#each moves}}
-  <ul>
-  <li>
-  <ul>
-  {{#each entries}}
-  <li>{{name}}: {{move}}</li>
-  {{/each}}
-  </ul>
-  </li>
-  {{/each}}
-  </ul>
-
-  <h3>Player present</h3>
+  <div id="players_pane">
+  <h3>Players</h3>
+  <div class="forms">
+  <input type="text" placeholder="your nickname" id="myname"></input>
+  <input type="submit" id="join" value="join" disabled="disabled"/>
+  <input type="submit" id="leave" value="leave" disabled="disabled"/>
+  </div>
   <ul>
   {{#each players}}
-  <li>Name: {{name}} {{#if isfinal}}✓{{else}}...{{/if}}</li>
+  {{#if isfinal}}
+  <li class="finished">
+  <span title="finished" class="symbol">✓</span>
+  {{else}}
+  <li class="waiting">
+  <span title="thinking" class="symbol">?</span>
+  {{/if}}
+  {{name}}</li>
   {{/each}}
   </ul>
+  </div>
 
-  <h3>Join and submit your move</h3>
-  Your name: <input type="text" id="myname"></input> <input type="submit" id="join" value="join" disabled="disabled"/> <input type="submit" id="leave" value="leave" disabled="disabled"/><br/>
-  Your move: <input type="text" id="mymove" disabled="disabled"></input> <br/>
-  Final? <input type="checkbox" id="myfinal" disabled="disabled"></input>
+ <div id="moves_pane">
+   <h3>Moves</h3>
+    <div class="forms">
+    <input type="text" id="mymove" placeholder="Your next move?" disabled="disabled"></input> 
+    <input type="checkbox" name="myfinal" id="myfinal" disabled="disabled"></input>
+    <label for="myfinal">Final?</label>
+    </div>
+    <ul>
+    {{#each moves}}
+    <ul>
+    <li>
+    <ul>
+    {{#each entries}}
+    <li>{{name}}: {{move}}</li>
+    {{/each}}
+    </ul>
+    </li>
+    {{/each}}
+    </ul>
+  </div>
 </template>
