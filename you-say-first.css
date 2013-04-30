@@ -20,6 +20,16 @@ h1, h3 {
     text-align: center;
 }
 
+#welcome {
+    position: absolute;
+    left: 30%;
+    right: 30%;
+    top: 30%;
+    padding:0px;
+    border: 8px solid lightblue;
+    text-align: center;
+}
+
 .content {
     bottom:0px;
 }
