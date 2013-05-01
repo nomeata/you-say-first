@@ -26,6 +26,25 @@ if (Meteor.isServer) {
       return userId == player.auth_tok;
     }
   });
+  Moves.allow({
+    insert: function (userId, doc) {
+      if (!doc.room)
+	  return false;
+      // Check if logged in
+      var p = Players.findOne({room: doc.room, auth_tok: userId});
+      if (!p)
+	  return false;
+      if (p.name != doc.name)
+	  return false;
+      if (!doc.timestamp)
+	  return false;
+      if (Math.abs(doc.timestamp - (new Date()).getTime()) > 2*1000)
+	  return false;
+      if (!doc.msg)
+	  return false;
+      return true;
+    }
+  })
 
   Meteor.methods({
     keepalive: function (player_id) {
@@ -51,16 +70,6 @@ if (Meteor.isServer) {
       }
       this.setUserId(auth_tok);
       return auth_tok;
-    },
-
-    sendChat: function (room_id, msg) {
-      // Has the player joined? What is his name?
-      // Is this user allowed to use the name
-      var p = Players.findOne({room: room_id, auth_tok: this.userId});
-      if (p) {
-    	var now = (new Date()).getTime();
-	Moves.insert({msg:msg, name:p.name, timestamp: now, room: room_id});
-      }
     },
 
     checkMove: function () {
@@ -302,7 +311,7 @@ if (Meteor.isClient) {
       });
     },
     'click input#leave': function (evt) {
-      me = player();
+      var me = player();
       Players.remove(me._id);
       Session.set('player_id', false);
     },
@@ -327,9 +336,13 @@ if (Meteor.isClient) {
     'click input#send': function (evt) {
       var msg = $('input#chat').val().trim();
       if (msg) {
-	Meteor.call('sendChat', Session.get('room_id'), msg);
+	var room_id = Session.get('room_id');
+	var me = player();
+    	var now = (new Date()).getTime();
+	console.log(room_id, me, now);
+	Moves.insert({msg:msg, name:me.name, timestamp: now, room: room_id});
+	$('input#chat').val('');
       }
-      $('input#chat').val('');
     }
   });
 
