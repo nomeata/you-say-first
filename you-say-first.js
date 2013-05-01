@@ -79,7 +79,9 @@ if (Meteor.isServer) {
 	  move.push({name: player.name, move: player.move});
 	  Players.update(player._id, {$set : {move : "", isfinal: false} });
 	});
-	Moves.insert({entries:move, room: room_id});
+    	var now = (new Date()).getTime();
+	var num = Moves.find({room:room_id}).count();
+	Moves.insert({entries:move, timestamp: now, room: room_id, count: num+1});
 	//console.log("Got a finished move:", move);
       }
     }
@@ -237,6 +239,11 @@ if (Meteor.isClient) {
       }
     }
   });
+
+  Template.room.helpers({
+    format_time: function (timestamp) {
+    	return new Date(timestamp).toString();
+    }});
 
   Template.room.events({
     'keyup input#myname': function (evt) {

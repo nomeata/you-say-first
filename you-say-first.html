@@ -74,6 +74,9 @@ You can create or enter a room here: <br/>
     <ul>
     {{#each moves}}
     <li>
+    <div class="moveheader">
+    Move n° {{count}} (<span class="date">{{format_time timestamp}})
+    </div>
     <ul>
     {{#each entries}}
     <li><span class="name">{{name}}</span><span class="move">{{move}}</span></li>
