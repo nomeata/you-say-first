@@ -240,6 +240,11 @@ if (Meteor.isClient) {
   };
 
   Template.welcome.events({
+    'keypress input#room': function (evt) {
+      if (evt.which==13) {
+      	$('input#roomsubmit').click();
+      } 
+    },
     'click input#roomsubmit': function (evt) {
       var roomname = $('input#room').val().trim();
       if (roomname) {
@@ -253,10 +258,21 @@ if (Meteor.isClient) {
     	return new Date(timestamp).toString();
     }});
 
+  function submitMove () {
+    var isfinal = Boolean($('input#myfinal').prop('checked'));
+    var move = $('input#mymove').val().trim();
+    Players.update(Session.get('player_id'), {$set: {move: move, isfinal: isfinal}});
+  }
+
   Template.room.events({
     'keyup input#myname': function (evt) {
       var name = $('input#myname').val().trim();
       $('input#join').prop('disabled', !name);
+    },
+    'keypress input#myname': function (evt) {
+      if (evt.which==13) {
+      	$('input#join').click();
+      } 
     },
     'click input#join': function (evt) {
       var name = $('input#myname').val().trim();
@@ -269,14 +285,23 @@ if (Meteor.isClient) {
       Players.remove(me._id);
       Session.set('player_id', false);
     },
+    'keypress input#mymove': function (evt) {
+      if (evt.which==13) {
+      	$('input#myfinal').prop('checked', ! $('input#myfinal').prop('checked'));
+	submitMove();
+      } 
+    },
     'change input#myfinal': function (evt) {
-      var isfinal = Boolean($('input#myfinal').prop('checked'));
-      var move = $('input#mymove').val().trim();
-      Players.update(Session.get('player_id'), {$set: {move: move, isfinal: isfinal}});
+      submitMove();
     },
     'keyup input#chat': function (evt) {
       var msg = $('input#chat').val().trim();
       $('input#send').prop('disabled', !msg);
+    },
+    'keypress input#chat': function (evt) {
+      if (evt.which==13) {
+      	$('input#send').click();
+      } 
     },
     'click input#send': function (evt) {
       var msg = $('input#chat').val().trim();
