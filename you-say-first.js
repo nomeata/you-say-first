@@ -187,17 +187,16 @@ if (Meteor.isClient) {
   Deps.autorun(function (){
     var me = player();
     if (me) {
-      if (!me.move) {
-	// Server has reset the moves
-	$('input#mymove').val(me.move);
-	$('input#myfinal').prop('checked', me.isfinal);
-      }
+      // Load values
       $('input#myname').val(me.name);
+      $('input#mymove').val(me.move);
+      $('input#myfinal').prop('checked', me.isfinal);
+
       // activate fields for logged-in users
       $('input#myname').prop('disabled', true);
       $('input#join').prop('disabled', true);
       $('input#leave').prop('disabled', false);
-      $('input#mymove').prop('disabled', false);
+      $('input#mymove').prop('disabled', me.isfinal);
       $('input#myfinal').prop('disabled', false);
     } else {
       // disable fields for logged-in users
@@ -255,21 +254,10 @@ if (Meteor.isClient) {
       Players.remove(me._id);
       Session.set('player_id', false);
     },
-    'keyup input#mymove': function (evt) {
-      var move = $('input#mymove').val().trim();
-      if (move) {
-	Players.update(Session.get('player_id'), {$set: {move: move}});
-      } else {
-	Players.update(Session.get('player_id'), {$unset: {move: ''}});
-      }
-    },
     'change input#myfinal': function (evt) {
-      var isfinal = $('input#myfinal').prop('checked');
-      if (isfinal) {
-	Players.update(Session.get('player_id'), {$set: {isfinal: true}});
-      } else {
-	Players.update(Session.get('player_id'), {$set: {isfinal: false}});
-      }
+      var isfinal = Boolean($('input#myfinal').prop('checked'));
+      var move = $('input#mymove').val().trim();
+      Players.update(Session.get('player_id'), {$set: {move: move, isfinal: isfinal}});
     },
   });
 
