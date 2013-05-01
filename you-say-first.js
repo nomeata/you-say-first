@@ -208,6 +208,8 @@ if (Meteor.isClient) {
       $('input#leave').prop('disabled', false);
       $('input#mymove').prop('disabled', me.isfinal);
       $('input#myfinal').prop('disabled', false);
+      $('input#chat').prop('disabled', false);
+      $('input#send').prop('disabled', false);
     } else {
       // disable fields for logged-in users
       $('input#myname').prop('disabled', false);
@@ -215,6 +217,8 @@ if (Meteor.isClient) {
       $('input#leave').prop('disabled', true);
       $('input#mymove').prop('disabled', true);
       $('input#myfinal').prop('disabled', true);
+      $('input#chat').prop('disabled', true);
+      $('input#send').prop('disabled', true);
     };
   })
 
