@@ -27,11 +27,24 @@ h1, h3 {
     top: 30%;
     padding:0px;
     border: 8px solid lightblue;
+    border-radius: 16px;
     text-align: center;
 }
 
-.content {
+.overflow {
+    position: absolute;
+    left:0px;
+    right:0px;
+    top:0px;
     bottom:0px;
+    border:0px;
+    overflow: auto;
+}
+#players_pane .overflow, #moves_pane .overflow {
+    top:100px;
+}
+#explanation .overflow{
+    top:45px;
 }
 
 #players_pane h3,
@@ -39,16 +52,18 @@ h1, h3 {
 #explanation h3 {
     background-color: lightblue;
     margin:0px;
-    margin-bottom: 10px;
-    padding: 4px;
+    margin-bottom: 0px;
+    padding: 5px;
     text-align:center;
+    font-size: 25px;
+    height:30px;
 }
 
-#players_pane .forms {
-    padding: 0px 10px;
+.forms {
+    padding: 10px;
     margin:0px;
-    margin-bottom: 10px;
-
+    text-align: center;
+    height: 35px;
 }
 #players_pane input#myname {
     width: 50%;
@@ -79,12 +94,13 @@ h1, h3 {
   display:inline-block;
   text-align:center;
   width:1em;
+  font-family: sans-serif;
+  font-weight: bold;
+}
+#players_pane ul li.waiting .symbol {
   color: red;
 }
 #players_pane ul li.finished .symbol {
-  display:inline-block;
-  text-align:center;
-  width:1em;
   color: green;
 }
 #players_pane ul li {
@@ -97,8 +113,9 @@ h1, h3 {
     right: 80%;
     top: 55px;
     bottom: 1%;
-    overflow: hidden;
+    overflow: auto;
     border: 1px solid lightblue;
+    border-radius: 4px;
 }
 #moves_pane {
     position: absolute;
@@ -106,16 +123,53 @@ h1, h3 {
     right: 21%;
     top: 55px;
     bottom: 1%;
-    overflow: hidden;
+    overflow: auto;
     border: 1px solid lightblue;
-}
-#moves_pane .forms {
-    padding: 2px;
-    text-align: center;
-
+    border-radius: 4px;
 }
 #moves_pane input#mymove {
     width:80%;
+}
+
+#moves_pane div.overflow > ul {
+    display:block;
+    padding:0px;
+    margin:0px;
+}
+#moves_pane div.overflow > ul > li {
+    display:block;
+    padding:0px 8px;
+    margin:0px 8px 10px 8px;
+    border: 4px solid lightgreen;
+    border-radius: 4px;
+}
+#moves_pane div.overflow > ul > li > ul {
+    display:table;
+    margin: 0px;
+    padding: 0px;
+    width: 100%;
+}
+#moves_pane div.overflow > ul > li > ul > li {
+    display:table-row;
+}
+#moves_pane div.overflow > ul > li > ul > li > span {
+    padding: 8px 4px;
+    display:table-cell;
+    border-bottom: 1px solid lightgray;
+}
+#moves_pane div.overflow > ul > li > ul > li:last-child > span {
+    border-bottom: 0px;
+}
+#moves_pane div.overflow > ul > li > ul > li > span.name {
+    display:table-cell;
+    text-align: left;
+    width:5em;
+    font-family: sans-serif;
+    font-weight: bold;
+}
+#moves_pane div.overflow > ul > li > ul > li > span.move {
+    display:table-cell;
+    text-align: left;
 }
 
 #explanation {
@@ -125,6 +179,7 @@ h1, h3 {
     top: 55px;
     bottom: 1%;
     border: 1px solid lightblue;
+    border-radius: 4px;
     overflow: auto;
 }
 #explanation p {

@@ -10,13 +10,13 @@
 
 <div id="explanation">
 <h3>What is this?</h3>
-<div class="content">
+<div class="overflow">
 <p>
 You-say-first is a web application to play ad-hoc games where all players have to submit their moves at the same time (e.g. rock-paper-scissors, diplomacy). Here, you can create a room (just enter any name that you want), share the address with your friends and start playing. You can enter your move, and as soon as everyone ticks the ‘Final’ field, the moves are shown to everyone.
 </p>
 
 <p>
-This was inspired by a <a href="http://boardgames.stackexchange.com/questions/11821/abstract-move-holding-service-for-simultaneous-move-board-games">question by ‘Fool’</a> on the Boards and Card Games stack overflow page. It was created by <a href="mailto:mail@joachim-breitner.de">Joachim Breitner</a> using Meteor and hosted by <a href="http://meteor.com">meteor.com</a>. You can <a href="https://github.com/nomeata/you-say-first">Check out the code</a>; bug reports and pull requests are welcome.
+This was inspired by a <a href="http://boardgames.stackexchange.com/questions/11821/abstract-move-holding-service-for-simultaneous-move-board-games">question by ‘Fool’</a> on the Boards and Card Games stack overflow page. It was created by <a href="mailto:mail@joachim-breitner.de">Joachim Breitner</a> using Meteor and is hosted by <a href="http://meteor.com">meteor.com</a>. You can <a href="https://github.com/nomeata/you-say-first">Check out the code</a>; bug reports and pull requests are welcome.
 </p>
 </div>
 </div>
@@ -47,6 +47,7 @@ You can create or enter a room here: <br/>
   <input type="submit" id="join" value="join" disabled="disabled"/>
   <input type="submit" id="leave" value="leave" disabled="disabled"/>
   </div>
+  <div class="overflow">
   <ul>
   {{#each players}}
   {{#if isfinal}}
@@ -60,6 +61,7 @@ You can create or enter a room here: <br/>
   {{/each}}
   </ul>
   </div>
+  </div>
 
  <div id="moves_pane">
    <h3>Moves</h3>
@@ -68,17 +70,18 @@ You can create or enter a room here: <br/>
     <input type="checkbox" name="myfinal" id="myfinal" disabled="disabled"></input>
     <label for="myfinal">Final?</label>
     </div>
+    <div class="overflow">
     <ul>
     {{#each moves}}
-    <ul>
     <li>
     <ul>
     {{#each entries}}
-    <li>{{name}}: {{move}}</li>
+    <li><span class="name">{{name}}</span><span class="move">{{move}}</span></li>
     {{/each}}
     </ul>
     </li>
     {{/each}}
     </ul>
+    </div>
   </div>
 </template>
