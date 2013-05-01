@@ -3,10 +3,8 @@ Players = new Meteor.Collection("player");
 Moves = new Meteor.Collection("moves");
 
 if (Meteor.isServer) {
-  // publish all the non-idle players.
-
   Meteor.publish('players', function (room_id) {
-    return Players.find({idle: false, room: room_id}, {fields: {auth_tok: 0, move: 0}});
+    return Players.find({room: room_id}, {fields: {auth_tok: 0, move: 0}});
   });
   Meteor.publish('players-self', function () {
     return Players.find({auth_tok: this.userId});
@@ -234,7 +232,7 @@ if (Meteor.isClient) {
   };
 
   Template.room.players = function () {
-    return Players.find({idle: false, room: Session.get('room_id')}, {sort: {'name':1}});
+    return Players.find({room: Session.get('room_id')}, {sort: {'name':1}});
   };
 
   Template.welcome.roomname = function () {
