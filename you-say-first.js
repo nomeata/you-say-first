@@ -69,7 +69,7 @@ if (Meteor.isServer) {
 	  //console.log("Found unfinished players.");
 	  return;
 	}
-	active_players = Players.find({idle: false, isfinal: true, room: room_id});
+	active_players = Players.find({idle: false, isfinal: true, room: room_id}, {sort: {name: 1}});
 	if (active_players.count() == 0) {
 	  //console.log("No finished players.");
 	  return;
@@ -220,11 +220,11 @@ if (Meteor.isClient) {
   };
 
   Template.room.moves = function () {
-    return Moves.find();
+    return Moves.find({}, {sort: {count: 1}});
   };
 
   Template.room.players = function () {
-    return Players.find({idle: false, room: Session.get('room_id')});
+    return Players.find({idle: false, room: Session.get('room_id')}, {sort: {'name':1}});
   };
 
   Template.welcome.roomname = function () {
