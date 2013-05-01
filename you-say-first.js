@@ -227,11 +227,25 @@ if (Meteor.isClient) {
     return Boolean(Session.get('player_id'));
   };
 
-  Template.room.moves = function () {
+  Template.moves.moves = function () {
     return Moves.find({}, {sort: {timestamp: 1}});
   };
+  Template.moves.helpers({
+    format_time: function (timestamp) {
+    	return new Date(timestamp).toString();
+    }});
+  Template.moves.rendered = function (inst) {
+    if (!Session.get('moves_scrolled')){
+      $("#moves_pane .overflow").scrollTop($("#moves_pane .overflow")[0].scrollHeight - $("#moves_pane .overflow").height());
+    }
+  };
+  Template.room.events({
+    'scroll #moves_pane .overflow': function (evt) {
+      Session.set('moves_scrolled', $("#moves_pane .overflow").scrollTop() != $("#moves_pane .overflow")[0].scrollHeight - $("#moves_pane .overflow").height());
+    },
+  });
 
-  Template.room.players = function () {
+  Template.players.players = function () {
     return Players.find({room: Session.get('room_id')}, {sort: {'name':1}});
   };
 
@@ -253,10 +267,6 @@ if (Meteor.isClient) {
     }
   });
 
-  Template.room.helpers({
-    format_time: function (timestamp) {
-    	return new Date(timestamp).toString();
-    }});
 
   function submitMove () {
     var isfinal = Boolean($('input#myfinal').prop('checked'));

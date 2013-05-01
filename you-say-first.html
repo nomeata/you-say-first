@@ -43,15 +43,7 @@ You can create or enter a room here: <br/>
 </div>
 </template>
 
-<template name="room">
-  <div id="players_pane">
-  <h3>Players</h3>
-  <div class="forms">
-  <input type="text" placeholder="your nickname" id="myname"></input>
-  <input type="submit" id="join" value="join" disabled="disabled"/>
-  <input type="submit" id="leave" value="leave" disabled="disabled"/>
-  </div>
-  <div class="overflow">
+<template name="players">
   <ul>
   {{#each players}}
   {{#if idle}}
@@ -69,17 +61,9 @@ You can create or enter a room here: <br/>
   {{name}}</li>
   {{/each}}
   </ul>
-  </div>
-  </div>
+</template>
 
- <div id="moves_pane">
-   <h3>Moves</h3>
-    <div class="forms">
-    <input type="text" id="mymove" placeholder="Your next move?" disabled="disabled"></input> 
-    <input type="checkbox" name="myfinal" id="myfinal" disabled="disabled"></input>
-    <label for="myfinal">Final?</label>
-    </div>
-    <div class="overflow">
+<template name="moves">
     <ul>
     {{#each moves}}
     {{#if msg}}<!-- a chat message -->
@@ -100,6 +84,30 @@ You can create or enter a room here: <br/>
     {{/if}}
     {{/each}}
     </ul>
+</template>
+
+<template name="room">
+  <div id="players_pane">
+  <h3>Players</h3>
+  <div class="forms">
+  <input type="text" placeholder="your nickname" id="myname"></input>
+  <input type="submit" id="join" value="join" disabled="disabled"/>
+  <input type="submit" id="leave" value="leave" disabled="disabled"/>
+  </div>
+  <div class="overflow">
+  {{> players}}
+  </div>
+  </div>
+
+ <div id="moves_pane">
+   <h3>Moves</h3>
+    <div class="forms">
+    <input type="text" id="mymove" placeholder="Your next move?" disabled="disabled"></input> 
+    <input type="checkbox" name="myfinal" id="myfinal" disabled="disabled"></input>
+    <label for="myfinal">Final?</label>
+    </div>
+    <div class="overflow">
+    {{> moves}}
     </div>
     <div class="forms bottom">
     <input type="text" placeholder="chat here" id="chat"></input>
