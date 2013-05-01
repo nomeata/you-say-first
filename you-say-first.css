@@ -196,4 +196,7 @@ h1, h3 {
     padding: 0px 10px;
     margin: 0px 0px 10px 0px;
     text-align: justify;
+    -webkit-hyphens: auto;
+    -moz-hyphens: auto;
+    hyphens: auto;
 }
