@@ -259,7 +259,9 @@ if (Meteor.isClient) {
   };
 
   Template.welcome.roomname = function () {
-    return Random.id()
+    return adjectives[Math.floor(Math.random()*adjectives.length)]+'-'+
+           nouns[Math.floor(Math.random()*nouns.length)]+'-'+
+    	   'room';
   };
 
   Template.welcome.events({
