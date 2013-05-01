@@ -231,12 +231,17 @@ if (Meteor.isClient) {
     return Moves.find({}, {sort: {timestamp: 1}});
   };
   Template.moves.helpers({
+    timeago_stamp: function (timestamp) {
+    	return new Date(timestamp).toISOString();
+    },
     format_time: function (timestamp) {
     	return new Date(timestamp).toString();
-    }});
+    },
+    });
   Template.moves.rendered = function (inst) {
     if (!Session.get('moves_scrolled')){
       $("#moves_pane .overflow").scrollTop($("#moves_pane .overflow")[0].scrollHeight - $("#moves_pane .overflow").height());
+      $("span.date").timeago();
     }
   };
   Template.room.events({

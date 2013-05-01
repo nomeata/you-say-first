@@ -73,7 +73,7 @@ You can create or enter a room here: <br/>
     {{else}}
     <li class="move">
     <div class="moveheader">
-    Move n° {{count}} (<span class="date">{{format_time timestamp}})
+    Move n° {{count}} (<span class="date" title="{{timeago_stamp timestamp}}">{{format_time timestamp}}</span>)
     </div>
     <ul>
     {{#each entries}}
