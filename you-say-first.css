@@ -46,6 +46,9 @@ h1, h3 {
 #explanation .overflow{
     top:40px;
 }
+#moves_pane .overflow {
+    bottom: 45px;
+}
 
 #players_pane h3,
 #moves_pane h3,
@@ -65,17 +68,20 @@ h1, h3 {
     text-align: center;
     height: 30px;
 }
+.forms.bottom {
+    position: absolute;
+    bottom:0px;
+    left: 0px;
+    right:0px;
+}
 #players_pane input#myname {
     width: 50%;
-    margin:right: 5%;
 }
 #players_pane input#leave {
     width: 20%;
-    margin:right: 5%;
 }
 #players_pane input#join {
     width: 20%;
-    margin:right: 0%;
 }
 
 #players_pane ul {
@@ -88,9 +94,9 @@ h1, h3 {
     display: block;
 }
 #players_pane ul li:nth-child(odd) {
-    background-color: lightgray;
+    background-color: rgb(224, 253, 224);
 }
-#players_pane ul li.waiting .symbol {
+#players_pane ul li .symbol {
   display:inline-block;
   text-align:center;
   width:1em;
@@ -127,6 +133,9 @@ h1, h3 {
     border: 1px solid lightblue;
     border-radius: 4px;
 }
+#moves_pane input#chat {
+    width: 80%;
+}
 #moves_pane input#mymove {
     width:80%;
 }
@@ -136,48 +145,68 @@ h1, h3 {
     padding:0px;
     margin:0px;
 }
-#moves_pane div.overflow > ul > li {
+#moves_pane div.overflow > ul > li.chat {
+    display:block;
+    margin:0px 12px 10px 12px;
+}
+#moves_pane div.overflow > ul > li.chat > span.name {
+    display: inline-block;
+    text-align: left;
+    width:5em;
+    font-family: sans-serif;
+    font-weight: bold;
+    padding: 0px 4px;
+}
+#moves_pane div.overflow > ul > li.chat > span.msg {
+    padding: 0px 4px;
+}
+#moves_pane div.overflow > ul > li.move {
     display:block;
     padding:0px 0px;
-    margin:0px 8px 10px 8px;
-    border: 4px solid lightgreen;
-    border-radius: 4px;
+    margin:0px 12px 6px 12px;
+    /* border: 4px solid lightgreen; */
+    background-color: rgb(224, 253, 224);
+    border-radius: 8px;
+    -moz-outline-radius: 8px;
 }
-#moves_pane div.overflow > ul > li div.moveheader {
+#moves_pane div.overflow > ul > li.move div.moveheader {
     font-family: sans-serif;
     font-size:70%;
     font-weight: bold;
     text-align:center;
     padding:4px; 
+    margin:0px;
     background-color: lightgreen;
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
     /* color: lightgray; */
 }
-#moves_pane div.overflow > ul > li > ul {
+#moves_pane div.overflow > ul > li.move > ul {
     display:table;
     margin: 0px;
     padding: 0px;
     width: 100%;
 }
-#moves_pane div.overflow > ul > li > ul > li {
+#moves_pane div.overflow > ul > li.move > ul > li {
     display:table-row;
     padding: 0px 8px;
 }
-#moves_pane div.overflow > ul > li > ul > li > span {
-    padding: 8px 4px;
+#moves_pane div.overflow > ul > li.move > ul > li > span {
+    padding: 4px 4px;
     display:table-cell;
     border-bottom: 1px solid lightgray;
 }
-#moves_pane div.overflow > ul > li > ul > li:last-child > span {
+#moves_pane div.overflow > ul > li.move > ul > li:last-child > span {
     border-bottom: 0px;
 }
-#moves_pane div.overflow > ul > li > ul > li > span.name {
+#moves_pane div.overflow > ul > li.move > ul > li > span.name {
     display:table-cell;
     text-align: left;
     width:5em;
     font-family: sans-serif;
     font-weight: bold;
 }
-#moves_pane div.overflow > ul > li > ul > li > span.move {
+#moves_pane div.overflow > ul > li.move > ul > li > span.move {
     display:table-cell;
     text-align: left;
 }

@@ -55,6 +55,16 @@ if (Meteor.isServer) {
       return auth_tok;
     },
 
+    sendChat: function (room_id, msg) {
+      // Has the player joined? What is his name?
+      // Is this user allowed to use the name
+      var p = Players.findOne({room: room_id, auth_tok: this.userId});
+      if (p) {
+    	var now = (new Date()).getTime();
+	Moves.insert({msg:msg, name:p.name, timestamp: now, room: room_id});
+      }
+    },
+
     checkMove: function () {
       // Can this be done better?
       rooms = {}
@@ -80,7 +90,7 @@ if (Meteor.isServer) {
 	  Players.update(player._id, {$set : {move : "", isfinal: false} });
 	});
     	var now = (new Date()).getTime();
-	var num = Moves.find({room:room_id}).count();
+	var num = Moves.find({room:room_id, entries: {$exists: true}}).count();
 	Moves.insert({entries:move, timestamp: now, room: room_id, count: num+1});
 	//console.log("Got a finished move:", move);
       }
@@ -220,7 +230,7 @@ if (Meteor.isClient) {
   };
 
   Template.room.moves = function () {
-    return Moves.find({}, {sort: {count: 1}});
+    return Moves.find({}, {sort: {timestamp: 1}});
   };
 
   Template.room.players = function () {
@@ -266,6 +276,17 @@ if (Meteor.isClient) {
       var move = $('input#mymove').val().trim();
       Players.update(Session.get('player_id'), {$set: {move: move, isfinal: isfinal}});
     },
+    'keyup input#chat': function (evt) {
+      var msg = $('input#chat').val().trim();
+      $('input#send').prop('disabled', !msg);
+    },
+    'click input#send': function (evt) {
+      var msg = $('input#chat').val().trim();
+      if (msg) {
+	Meteor.call('sendChat', Session.get('room_id'), msg);
+      }
+      $('input#chat').val('');
+    }
   });
 
 }

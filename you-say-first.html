@@ -50,12 +50,17 @@ You can create or enter a room here: <br/>
   <div class="overflow">
   <ul>
   {{#each players}}
+  {{#if idle}}
+  <li class="idle">
+  <span title="idle" class="symbol"></span>
+  {{else}}
   {{#if isfinal}}
   <li class="finished">
   <span title="finished" class="symbol">✓</span>
   {{else}}
   <li class="waiting">
   <span title="thinking" class="symbol">?</span>
+  {{/if}}
   {{/if}}
   {{name}}</li>
   {{/each}}
@@ -73,7 +78,12 @@ You can create or enter a room here: <br/>
     <div class="overflow">
     <ul>
     {{#each moves}}
-    <li>
+    {{#if msg}}<!-- a chat message -->
+    <li class="chat">
+    <span class="name">{{name}}</span><span class="msg">{{msg}}</span>
+    </li>
+    {{else}}
+    <li class="move">
     <div class="moveheader">
     Move n° {{count}} (<span class="date">{{format_time timestamp}})
     </div>
@@ -83,8 +93,13 @@ You can create or enter a room here: <br/>
     {{/each}}
     </ul>
     </li>
+    {{/if}}
     {{/each}}
     </ul>
+    </div>
+    <div class="forms bottom">
+    <input type="text" placeholder="chat here" id="chat"></input>
+    <input type="submit" id="send" value="send" disabled="disabled"/>
     </div>
   </div>
 </template>
