@@ -124,7 +124,7 @@ h1, h3 {
     bottom: 1%;
     overflow: auto;
     border: 1px solid lightblue;
-    border-radius: 4px;
+    border-radius: 8px;
 }
 #moves_pane {
     position: absolute;
@@ -134,7 +134,7 @@ h1, h3 {
     bottom: 1%;
     overflow: auto;
     border: 1px solid lightblue;
-    border-radius: 4px;
+    border-radius: 8px;
 }
 #moves_pane input#chat {
     width: 80%;
@@ -197,7 +197,7 @@ h1, h3 {
 #moves_pane div.overflow > ul > li.move > ul > li > span {
     padding: 4px 4px;
     display:table-cell;
-    border-bottom: 1px solid lightgray;
+    border-bottom: 1px solid lightgreen;
 }
 #moves_pane div.overflow > ul > li.move > ul > li:last-child > span {
     border-bottom: 0px;
@@ -221,7 +221,7 @@ h1, h3 {
     top: 55px;
     bottom: 1%;
     border: 1px solid lightblue;
-    border-radius: 4px;
+    border-radius: 8px;
     overflow: auto;
 }
 #explanation p {
