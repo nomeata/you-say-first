@@ -10,3 +10,5 @@ soon as everyone ticks the ‘Final’ field, the moves are shown to everyone.
 You can see it in action at http://you-say-first.nomeata.de/
 
 Especially the UI needs more love. Pull requests welcome!
+
+Link this? Then [flattr](https://flattr.com/thing/1309955/You-Say-First) it or vote it up at [Made With Meteor](http://madewith.meteor.com/you-say-first.nomeata.de).
