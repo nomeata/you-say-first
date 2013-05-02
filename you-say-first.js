@@ -1,4 +1,3 @@
-Rooms = new Meteor.Collection("rooms");
 Players = new Meteor.Collection("player");
 Moves = new Meteor.Collection("moves");
 
@@ -45,6 +44,14 @@ if (Meteor.isServer) {
       return true;
     }
   })
+
+  // Database setup
+  Meteor.startup(function () {
+    Players._ensureIndex({room: 1});
+    Players._ensureIndex({auth_tok: 1});
+    Moves._ensureIndex({room: 1});
+  });
+
 
   Meteor.methods({
     keepalive: function (player_id) {
