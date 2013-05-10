@@ -90,22 +90,22 @@ if (Meteor.isServer) {
 
     checkMove: function () {
       // Can this be done better?
-      rooms = {}
+      var rooms = {}
       Players.find({idle:false}).forEach(function (player) {
 	rooms[player.room] = 1;
       })
 
       for (var room_id in rooms) {
-	//console.log("Checking if move is done...");
-	unfinished_playsers = Players.find({idle: false, isfinal: false, room: room_id});
-	if (unfinished_playsers.count() > 0) {
-	  //console.log("Found unfinished players.");
-	  return;
+	//console.log("Checking if move is done in room", room_id);
+	var unfinished_players = Players.find({idle: false, isfinal: false, room: room_id});
+	if (unfinished_players.count() > 0) {
+	  // console.log("Found unfinished players in room", room_id);
+	  continue;
 	}
-	active_players = Players.find({idle: false, isfinal: true, room: room_id}, {sort: {name: 1}});
+	var active_players = Players.find({idle: false, isfinal: true, room: room_id}, {sort: {name: 1}});
 	if (active_players.count() == 0) {
-	  //console.log("No finished players.");
-	  return;
+	  // console.log("No finished players.");
+	  continue;
 	}
 	var move = [];
 	active_players.forEach(function (player) {
@@ -115,7 +115,7 @@ if (Meteor.isServer) {
     	var now = (new Date()).getTime();
 	var num = Moves.find({room:room_id, entries: {$exists: true}}).count();
 	Moves.insert({entries:move, timestamp: now, room: room_id, count: num+1});
-	//console.log("Got a finished move:", move);
+	// console.log("Got a finished move:", move);
       }
     },
 
