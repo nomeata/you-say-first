@@ -25,6 +25,13 @@ if (Meteor.isServer) {
       return userId == player.auth_tok;
     }
   });
+  Moves.deny({
+    insert: function (userId, doc) {
+      if (doc.msg == "I want to play!")
+	Meteor.call('letsplay', doc.room);
+      return false;
+    }
+  });
   Moves.allow({
     insert: function (userId, doc) {
       if (!doc.room)
@@ -110,6 +117,46 @@ if (Meteor.isServer) {
 	Moves.insert({entries:move, timestamp: now, room: room_id, count: num+1});
 	//console.log("Got a finished move:", move);
       }
+    },
+
+    // An attempt to write a Rock-Stone-Scissors bot, but not fully functional
+    letsplay: function (room_id) {
+      var auth_tok = this.userId;
+      players = Players.find({idle:false, room:room_id, auth_tok:auth_tok});
+      if (players.count() == 0) {
+        console.log('letsplay: player not here');
+	return;
+      }
+      var name = "Karlchen";
+      /*
+      if (Players.find({room: room_id, name: name}).count() > 0) {
+        console.log('letsplay: too many players here');
+	return;
+      }
+      */
+      var now = (new Date()).getTime();
+      var player_id = Players.insert(
+	{room: room_id, name: name, idle: false, last_keepalive: now, isfinal: false}
+	);
+      Meteor.setTimeout(function (){
+	var now = (new Date()).getTime();
+	Moves.insert({msg: "Hi there!", timestamp: now, room:room_id, name: name});
+	Meteor.setTimeout(function (){
+	  var now = (new Date()).getTime();
+	  Moves.insert({msg: "Hmm... Rock, Stone or Scissors?..", timestamp: now, room:room_id, name: name});
+	  Meteor.setTimeout(function (){
+	    var now = (new Date()).getTime();
+	    var moves = ["Rock", "Paper", "Scissors"];
+	    var move = moves[Math.floor(Math.random()*moves.length)];
+	    Players.update(player_id, {$set: {move: move, isfinal: true}});
+	    Meteor.setTimeout(function (){
+	      var now = (new Date()).getTime();
+	      Moves.insert({msg: "Playing with humans is boring, good bye...", timestamp: now, room:room_id, name: name});
+	      Players.remove(player_id);
+	    }, 20*1000);
+	  }, 1000);
+	}, 1000);
+      }, 1000);
     }
   });
 
@@ -269,6 +316,19 @@ if (Meteor.isClient) {
   Template.room.events({
     'scroll #moves_pane .overflow': function (evt) {
       Session.set('moves_scrolled', $("#moves_pane .overflow").scrollTop() != $("#moves_pane .overflow")[0].scrollHeight - $("#moves_pane .overflow").height());
+    },
+  });
+
+  Template.explanation.events({
+    'click #letsplay': function (evt) {
+      var room_id = Session.get('room_id');
+      if (room_id) {
+	var me = player();
+    	var now = (new Date()).getTime();
+	console.log(room_id, me, now);
+	Moves.insert({msg:'I want to play!', name:me.name, timestamp: now, room: room_id});
+      }
+      return false;
     },
   });
 
