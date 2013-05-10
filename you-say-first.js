@@ -144,18 +144,42 @@ if (Meteor.isServer) {
 	Meteor.setTimeout(function (){
 	  var now = (new Date()).getTime();
 	  Moves.insert({msg: "Hmm... Rock, Stone or Scissors?..", timestamp: now, room:room_id, name: name});
-	  Meteor.setTimeout(function (){
+	  }, 2*1000);
+	var wait;
+	var wait2;
+	var repeat;
+	repeat = Meteor.setInterval(function (){
+	  player = Players.findOne(player_id);
+	  if (!player)  {
+	      if (wait) Meteor.clearTimeout(wait);
+	      if (wait2) Meteor.clearTimeout(wait2);
+	      Meteor.clearInterval(repeat);
+	  }
+	  if (!player.isfinal) {
 	    var now = (new Date()).getTime();
 	    var moves = ["Rock", "Paper", "Scissors"];
 	    var move = moves[Math.floor(Math.random()*moves.length)];
-	    Players.update(player_id, {$set: {move: move, isfinal: true}});
-	    Meteor.setTimeout(function (){
+	    Players.update(player_id, {$set: {last_keepalive: now, move: move, isfinal: true}});
+
+	    if (wait) Meteor.clearTimeout(wait);
+	    if (wait2) Meteor.clearTimeout(wait2);
+	    wait2 = Meteor.setTimeout(function (){
+	      player = Players.findOne(player_id);
+	      if (player && player.isfinal) {
+		var now = (new Date()).getTime();
+		Moves.insert({msg: "I am done...", timestamp: now, room:room_id, name: name});
+	      }
+	    }, 4*1000);
+	    wait = Meteor.setTimeout(function (){
 	      var now = (new Date()).getTime();
 	      Moves.insert({msg: "Playing with humans is boring, good bye...", timestamp: now, room:room_id, name: name});
 	      Players.remove(player_id);
-	    }, 20*1000);
-	  }, 1000);
-	}, 1000);
+	      Meteor.clearInterval(repeat);
+	      if (wait) Meteor.clearTimeout(wait);
+	      if (wait2) Meteor.clearTimeout(wait2);
+	    }, 30*1000);
+	  }
+	}, 5*1000);
       }, 1000);
     }
   });
