@@ -41,6 +41,8 @@ if (Meteor.isServer) {
 	  return false;
       if (!doc.msg)
 	  return false;
+      if (doc.entries)
+	  return false;
       return true;
     }
   })
