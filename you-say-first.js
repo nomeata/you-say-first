@@ -119,7 +119,7 @@ if (Meteor.isServer) {
       }
     },
 
-    // An attempt to write a Rock-Stone-Scissors bot, but not fully functional
+    // An attempt to write a Rock-Paper-Scissors bot, but not fully functional
     letsplay: function (room_id) {
       var auth_tok = this.userId;
       players = Players.find({idle:false, room:room_id, auth_tok:auth_tok});
@@ -143,7 +143,7 @@ if (Meteor.isServer) {
 	Moves.insert({msg: "Hi there!", timestamp: now, room:room_id, name: name});
 	Meteor.setTimeout(function (){
 	  var now = (new Date()).getTime();
-	  Moves.insert({msg: "Hmm... Rock, Stone or Scissors?..", timestamp: now, room:room_id, name: name});
+	  Moves.insert({msg: "Hmm... Rock, Paper or Scissors?..", timestamp: now, room:room_id, name: name});
 	  }, 2*1000);
 	var wait;
 	var wait2;
