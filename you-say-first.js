@@ -159,25 +159,34 @@ if (Meteor.isServer) {
 	    var now = (new Date()).getTime();
 	    var moves = ["Rock", "Paper", "Scissors"];
 	    var move = moves[Math.floor(Math.random()*moves.length)];
-	    Players.update(player_id, {$set: {last_keepalive: now, move: move, isfinal: true}});
 
-	    if (wait) Meteor.clearTimeout(wait);
-	    if (wait2) Meteor.clearTimeout(wait2);
-	    wait2 = Meteor.setTimeout(function (){
-	      player = Players.findOne(player_id);
-	      if (player && player.isfinal) {
-		var now = (new Date()).getTime();
-		Moves.insert({msg: "I am done...", timestamp: now, room:room_id, name: name});
-	      }
-	    }, 4*1000);
-	    wait = Meteor.setTimeout(function (){
-	      var now = (new Date()).getTime();
-	      Moves.insert({msg: "Playing with humans is boring, good bye...", timestamp: now, room:room_id, name: name});
+	    var other_players = Players.find({room: room_id, idle: false});
+	    if (other_players.count() <= 1) {
 	      Players.remove(player_id);
 	      Meteor.clearInterval(repeat);
 	      if (wait) Meteor.clearTimeout(wait);
 	      if (wait2) Meteor.clearTimeout(wait2);
-	    }, 30*1000);
+	    } else {
+	      Players.update(player_id, {$set: {last_keepalive: now, move: move, isfinal: true}});
+
+	      if (wait) Meteor.clearTimeout(wait);
+	      if (wait2) Meteor.clearTimeout(wait2);
+	      wait2 = Meteor.setTimeout(function (){
+		player = Players.findOne(player_id);
+		if (player && player.isfinal) {
+		  var now = (new Date()).getTime();
+		  Moves.insert({msg: "I am done...", timestamp: now, room:room_id, name: name});
+		}
+	      }, 4*1000);
+	      wait = Meteor.setTimeout(function (){
+		var now = (new Date()).getTime();
+		Moves.insert({msg: "Playing with humans is boring, good bye...", timestamp: now, room:room_id, name: name});
+		Players.remove(player_id);
+		Meteor.clearInterval(repeat);
+		if (wait) Meteor.clearTimeout(wait);
+		if (wait2) Meteor.clearTimeout(wait2);
+	      }, 30*1000);
+	    }
 	  }
 	}, 5*1000);
       }, 1000);
