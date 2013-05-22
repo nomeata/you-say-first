@@ -3,10 +3,10 @@ Moves = new Meteor.Collection("moves");
 
 if (Meteor.isServer) {
   Meteor.publish('players', function (room_id) {
-    return Players.find({room: room_id}, {fields: {auth_tok: 0, move: 0}});
+    return Players.find({room: room_id}, {fields: {last_keepalive: 0, auth_tok: 0, move: 0}});
   });
   Meteor.publish('players-self', function () {
-    return Players.find({auth_tok: this.userId});
+    return Players.find({auth_tok: this.userId}, {fields: {last_keepalive: 0}});
   });
   Meteor.publish('moves', function (room_id) {
     return Moves.find({room: room_id});
@@ -297,8 +297,12 @@ if (Meteor.isClient) {
     if (me) {
       // Load values
       $('input#myname').val(me.name);
-      $('input#mymove').val(me.move);
-      $('input#myfinal').prop('checked', me.isfinal);
+      // Only set move when myfinal is checked, e.g. when the
+      // user has submitted a move and the next turn begins
+      if ($('input#myfinal').prop('checked')) {
+	      $('input#mymove').val(me.move);
+	      $('input#myfinal').prop('checked', me.isfinal);
+      }
 
       // activate fields for logged-in users
       $('input#myname').prop('disabled', true);
@@ -358,7 +362,6 @@ if (Meteor.isClient) {
       if (room_id) {
 	var me = player();
     	var now = (new Date()).getTime();
-	console.log(room_id, me, now);
 	Moves.insert({msg:'I want to play!', name:me.name, timestamp: now, room: room_id});
       }
       return false;
@@ -441,7 +444,6 @@ if (Meteor.isClient) {
 	var room_id = Session.get('room_id');
 	var me = player();
     	var now = (new Date()).getTime();
-	console.log(room_id, me, now);
 	Moves.insert({msg:msg, name:me.name, timestamp: now, room: room_id});
 	$('input#chat').val('');
       }
