@@ -128,12 +128,10 @@ if (Meteor.isServer) {
 	return;
       }
       var name = "Karlchen";
-      /*
-      if (Players.find({room: room_id, name: name}).count() > 0) {
-        console.log('letsplay: too many players here');
+      if (Players.find({room: room_id, name: name, idle:false}).count() > 0) {
+        console.log('letsplay: another bot already here');
 	return;
       }
-      */
       var now = (new Date()).getTime();
       var player_id = Players.insert(
 	{room: room_id, name: name, idle: false, last_keepalive: now, isfinal: false}
