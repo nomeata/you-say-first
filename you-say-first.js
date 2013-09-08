@@ -29,6 +29,9 @@ if (Meteor.isServer) {
     insert: function (userId, doc) {
       if (doc.msg == "I want to play!")
 	Meteor.call('letsplay', doc.room);
+      roll = handleDiceCmd(doc.msg)
+      if (roll)
+	 Moves.insert({msg: roll, timestamp: doc.timestamp+1, room:doc.room, name: "Dice Cup"});
       return false;
     }
   });
@@ -361,6 +364,15 @@ if (Meteor.isClient) {
 	var me = player();
     	var now = (new Date()).getTime();
 	Moves.insert({msg:'I want to play!', name:me.name, timestamp: now, room: room_id});
+      }
+      return false;
+    },
+    'click .saythis': function (evt) {
+      var room_id = Session.get('room_id');
+      if (room_id) {
+	var me = player();
+    	var now = (new Date()).getTime();
+	Moves.insert({msg:evt.currentTarget.text, name:me.name, timestamp: now, room: room_id});
       }
       return false;
     },
