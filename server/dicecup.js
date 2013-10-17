@@ -26,6 +26,10 @@ handleDiceCmd = function (msg) {
     number = parseInt(match[1]);
   }
 
+  if (number > 20) {
+    return "Sorry, but I will not throw more than 20 dice for you...";
+  }
+
   var sides = 6;
   var lookup = null;
 
